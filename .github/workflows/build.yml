@@ -26,7 +26,7 @@ jobs:
           file build/hook_rtsp_hooked
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: hook_rtsp_hooked
           path: build/hook_rtsp_hooked
