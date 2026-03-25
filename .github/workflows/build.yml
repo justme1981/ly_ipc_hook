@@ -1,29 +1,32 @@
-name: Build MIPS Hook
+name: Build Hook RTSP
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:  # 手动触发
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  build:
+  build-mips:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Node.js 24
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout Repo
+        uses: actions/checkout@v3
 
-    - name: Install MIPS cross-compiler
-      run: sudo apt update && sudo apt install -y gcc-mipsel-linux-gnu
+      - name: Install MIPS Cross Compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-mipsel-linux-gnu build-essential
 
-    - name: Compile hook_rtsp_full.so
-      run: |
-        mipsel-linux-gnu-gcc -shared -fPIC hook_rtsp_full.c -o hook_rtsp_full.so -ldl -lpthread
+      - name: Compile Hook
+        run: |
+          mkdir -p build
+          mipsel-linux-gnu-gcc -O2 -march=mips32 -mabi=32 -o build/hook_rtsp_hooked hook_rtsp_full.c -lpthread -ldl
+          file build/hook_rtsp_hooked
 
-    - name: Upload compiled .so as artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: hook_rtsp_full.so
-        path: hook_rtsp_full.so
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: hook_rtsp_hooked
+          path: build/hook_rtsp_hooked
