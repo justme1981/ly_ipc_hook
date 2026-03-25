@@ -33,7 +33,7 @@ jobs:
           file build/hook_rtsp_exec
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: hook_rtsp
           path: build/
