@@ -3,13 +3,13 @@ name: Build MIPS Hook
 on:
   push:
     branches: [ main ]
-  workflow_dispatch: # 手动触发
+  workflow_dispatch:  # 手动触发
 
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Node.js 24
 
     steps:
     - name: Checkout repository
@@ -23,7 +23,7 @@ jobs:
         mipsel-linux-gnu-gcc -shared -fPIC hook_rtsp_full.c -o hook_rtsp_full.so -ldl -lpthread
 
     - name: Upload compiled .so as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: hook_rtsp_full.so
         path: hook_rtsp_full.so
