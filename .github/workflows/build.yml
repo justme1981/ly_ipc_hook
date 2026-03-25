@@ -1,37 +1,14 @@
-name: Build MIPS Hook
-
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
-
 jobs:
   build-mips:
     runs-on: ubuntu-latest
+    container:
+      image: multiarch/crossbuild:latest
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v3
-
-      - name: Install MIPS toolchain
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-mipsel-linux-gnu g++-mipsel-linux-gnu make
-
-      - name: Compile hook_rtsp.so
-        run: |
-          mkdir -p build
+      - uses: actions/checkout@v3
+      - run: |
           mipsel-linux-gnu-gcc -O2 -march=mips32 -mabi=32 -fPIC -shared \
             -o build/hook_rtsp.so hook_rtsp_full.c -lpthread -ldl
-          file build/hook_rtsp.so
-
-      - name: Compile hook_rtsp executable (optional)
-        run: |
-          mipsel-linux-gnu-gcc -O2 -march=mips32 -mabi=32 \
-            -o build/hook_rtsp_exec hook_rtsp_full.c -lpthread -ldl
-          file build/hook_rtsp_exec
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: hook_rtsp
           path: build/
