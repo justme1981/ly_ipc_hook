@@ -1,0 +1,27 @@
+name: Build MIPS Hook
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    container:
+      image: multiarch/crossbuild:latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: |
+          make
+          file hook_rtsp.so
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: hook_rtsp
+          path: hook_rtsp.so
