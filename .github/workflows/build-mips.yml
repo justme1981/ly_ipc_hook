@@ -9,13 +9,13 @@ jobs:
   build-mips:
     runs-on: ubuntu-latest
     env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-  container:
-      image: multiarch/crossbuild:latest  # Docker 容器，带 MIPS 工具链
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true   # Node.js 24
+    container:
+      image: multiarch/crossbuild:latest         # Docker 容器，自带 MIPS 工具链
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4   # 最新版本支持 Node.js 24
 
       - name: Create build directory
         run: mkdir -p build
@@ -33,7 +33,7 @@ jobs:
           file build/hook_rtsp_exec
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: hook_rtsp
           path: build/
