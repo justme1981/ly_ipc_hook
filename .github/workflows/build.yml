@@ -24,8 +24,8 @@ jobs:
       - name: Compile Hook
         run: |
           mkdir -p build
-          echo "当前目录：$(pwd)"
-    ls -l
+          echo "当前目录：$(pwd) 
+          ls -l
           mipsel-linux-gnu-gcc -O2 -march=mips32 -mabi=32 -o build/hook_rtsp_hooked hook_rtsp_full.c -lpthread -ldl
           file build/hook_rtsp_hooked
 
